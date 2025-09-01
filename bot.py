@@ -2,10 +2,12 @@ import os
 import requests
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+from dotenv import load_dotenv  # اضافه شد برای خواندن .env
 
 # ===========================
-# توکن تلگرام: از Environment Variable میاد
+# بارگذاری متغیرهای محیطی
 # ===========================
+load_dotenv()  # فایل .env رو میخونه
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 
 # ===========================
@@ -50,6 +52,10 @@ async def download_music(update: Update, context):
 # main
 # ===========================
 if __name__ == "__main__":
+    if not TOKEN:
+        print("توکن ربات پیدا نشد! لطفا در فایل .env واردش کن.")
+        exit()
+
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
@@ -58,4 +64,5 @@ if __name__ == "__main__":
 
     print("ربات در حال اجراست...")
     app.run_polling()
+
 
